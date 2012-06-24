@@ -9,7 +9,7 @@ Prototype - Letra {{ letter }}
 
 <ul>
   {% for serie, link in series.items() %}
-  <li>{{ serie }}</li>
+  <li><a href="/serie/url?url={{ link }}">{{ serie }}</a></li>
   {% endfor %}
 </ul>
 {% endblock %}
