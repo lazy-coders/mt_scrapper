@@ -13,7 +13,8 @@ def show_list_by_letter(letter):
     html = requests.get("http://mejortorrent.com/series-letra-%s.html" % letter)
     soup = BeautifulSoup(html.content)
     for link in soup.findAll('a'):
-        print link.get('href')
+        if str(link.get('href'))[1:8] == 'serie-d':
+            print link.get('href')
     return "done"
 
 if __name__ == "__main__":
