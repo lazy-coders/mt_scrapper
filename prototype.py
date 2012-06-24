@@ -1,12 +1,13 @@
 from flask import Flask
+from flask import render_template
 import requests
 from bs4 import BeautifulSoup
 
 app = Flask(__name__)
 
-@app.route("/<user>")
+@app.route("/")
 def hello(user):
-    return "Hello World! Is %s your name?" % user
+    return render_template
 
 @app.route("/list/<letter>")
 def show_list_by_letter(letter):
@@ -17,10 +18,10 @@ def show_list_by_letter(letter):
         if str(link.get('href'))[1:8] == 'serie-d':
             series[link.contents[0]] = link.get('href')
     
-    for serie, link in series.iteritems():
-        print "%s: %s" % (serie, link)
-
-    return "done"
+    return render_template('letter.html',
+                           series=series,
+                           letter=letter,
+                           section="Series - letra %s" % letter)
 
 if __name__ == "__main__":
     app.run(debug=True)

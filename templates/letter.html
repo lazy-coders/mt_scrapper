@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Prototype - Letra {{ letter }}
+{% endblock %}
+
+{% block content %}
+<h1>Lista de series por la letra {{ letter }}</h1>
+
+<ul>
+  {% for serie, link in series.items() %}
+  <li>{{ serie }}</li>
+  {% endfor %}
+</ul>
+{% endblock %}
