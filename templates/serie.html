@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Prototype - Serie {{ section }}
+{% endblock %}
+
+{% block content %}
+<h1>{{ section }}</h1>
+<img src="{{ cover }}" />
+
+<ul>
+  {% for torrent in torrents %}
+  <li>{{ torrent }}</li>
+  {% endfor %}
+</ul>
+
+{% endblock %}

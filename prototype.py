@@ -43,14 +43,22 @@ def show_chapters():
         if str(input.get('name'))[0:9] == 'episodios':
             episodios[input.get('name')] = input.get('value')
 
-    # Hay que crear una peticion POST con los valores del dict episodios
-    # checkall=on, total_capis=dict.count y tabla=series contra la url
-    # http://mejortorrent.com/secciones.php?sec=descargas&ap=contar_varios
+    # Generamos la peticion POST y parseamos los torrents
 
-    for e, v in episodios.items():
-        print "Ep %s: %s" % (e, v)
+    payload = {'checkall': 'on', 'total_capis': len(episodios), 'tabla': 'series'}
+    payload = dict(payload.items() + episodios.items())
+    post = requests.post('http://mejortorrent.com/secciones.php?sec=descargas&ap=contar_varios', payload)
+    soup_post = BeautifulSoup(post.text)
 
-    return "<h1>Imagen</h1><img src=\"%s\" />" % cover
+    torrents = []
+
+    for link in soup_post.findAll('a'):
+        if str(link.get('href'))[0:52] == 'http://www.mejortorrent.com/uploads/torrents/series/':
+            torrents.append(link.get('href'))
+
+    return render_template('serie.html', section=request.args.get('name', ''),
+                           torrents=torrents,
+                           cover=cover)
         
 
 if __name__ == "__main__":
