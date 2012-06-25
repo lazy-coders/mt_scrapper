@@ -8,11 +8,16 @@ from bs4 import BeautifulSoup
 DOWNLOAD_DIR = 'Downloads'
 
 def downloadFile(url, directory):
-    file = urllib2.urlopen(url)
+    print "Voy a descargar la url %s" % url
 
     fileName = url[url.rfind('/')+1:len(url)]
+    # To avoid errors due special characters in the filename,
+    # we use urllib2 to quote it
+    url = url[0:url.rfind('/')+1] + urllib2.quote(fileName)
+    print "La URL tras el quote es %s" % url
     fileName = directory + '/' + fileName
 
+    file = urllib2.urlopen(url)
     localFile = open(fileName, 'w')
     localFile.write(file.read())
     localFile.close()
