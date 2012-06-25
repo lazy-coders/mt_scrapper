@@ -1,7 +1,22 @@
 from flask import Flask, request, render_template
 import string
 import requests
+import urllib2
 from bs4 import BeautifulSoup
+
+
+DOWNLOAD_DIR = 'Downloads'
+
+def downloadFile(url, directory):
+    file = urllib2.urlopen(url)
+
+    fileName = url[url.rfind('/')+1:len(url)]
+    fileName = directory + '/' + fileName
+
+    localFile = open(fileName, 'w')
+    localFile.write(file.read())
+    localFile.close()
+
 
 app = Flask(__name__)
 
@@ -44,7 +59,6 @@ def show_chapters():
             episodios[input.get('name')] = input.get('value')
 
     # Generamos la peticion POST y parseamos los torrents
-
     payload = {'checkall': 'on', 'total_capis': len(episodios), 'tabla': 'series'}
     payload = dict(payload.items() + episodios.items())
     post = requests.post('http://mejortorrent.com/secciones.php?sec=descargas&ap=contar_varios', payload)
@@ -55,6 +69,9 @@ def show_chapters():
     for link in soup_post.findAll('a'):
         if str(link.get('href'))[0:52] == 'http://www.mejortorrent.com/uploads/torrents/series/':
             torrents.append(link.get('href'))
+
+    for torrent in torrents:
+        downloadFile(torrent, DOWNLOAD_DIR)
 
     return render_template('serie.html', section=request.args.get('name', ''),
                            torrents=torrents,
