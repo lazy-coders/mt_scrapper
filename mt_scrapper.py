@@ -1,6 +1,5 @@
-from flask import Flask
-from flask import request
-from flask import render_template
+from flask import Flask, request, render_template
+import string
 import requests
 from bs4 import BeautifulSoup
 
@@ -9,7 +8,8 @@ app = Flask(__name__)
 @app.route("/")
 def hello():
     return render_template('home.html',
-                           section="Prototype - Inicio")
+                           section="Prototype - Inicio",
+                           string=string)
 
 
 @app.route('/serie/list/<letter>')

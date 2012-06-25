@@ -6,4 +6,10 @@ Prototype - Inicio
 
 {% block content %}
 <h1>{{ section }}</h1>
+
+<ul>
+  {% for l in string.lowercase %}
+  <li><a href="/serie/list/{{ l }}">Letra {{ l }}</a></li>
+  {% endfor %}
+</ul>
 {% endblock %}
