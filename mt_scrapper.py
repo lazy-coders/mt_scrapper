@@ -5,8 +5,6 @@ import urllib2
 from bs4 import BeautifulSoup
 
 
-DOWNLOAD_DIR = 'Downloads'
-
 def downloadFile(url, directory):
     fileName = url[url.rfind('/')+1:len(url)]
     # To avoid errors due special characters in the filename,
@@ -21,6 +19,7 @@ def downloadFile(url, directory):
 
 
 app = Flask(__name__)
+app.config.from_pyfile("myconf.py")
 
 @app.route("/")
 def hello():
@@ -37,7 +36,7 @@ def show_list_by_letter(letter):
     for link in soup.findAll('a'):
         if str(link.get('href'))[1:8] == 'serie-d':
             series[link.contents[0]] = link.get('href')
-    
+
     return render_template('letter.html',
                            series=series,
                            letter=letter,
@@ -73,12 +72,12 @@ def show_chapters():
             torrents.append(link.get('href'))
 
     for torrent in torrents:
-        downloadFile(torrent, DOWNLOAD_DIR)
+        downloadFile(torrent, app.config['DOWNLOAD_DIR'])
 
     return render_template('serie.html', section=request.args.get('name', ''),
                            torrents=torrents,
                            cover=cover)
-        
+
 
 if __name__ == "__main__":
     app.run(debug=True)
