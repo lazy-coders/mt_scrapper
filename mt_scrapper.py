@@ -2,6 +2,7 @@ from flask import Flask, request, render_template
 import string
 import requests
 import urllib2
+import os
 from bs4 import BeautifulSoup
 
 
@@ -10,7 +11,7 @@ def downloadFile(url, directory):
     # To avoid errors due special characters in the filename,
     # we use urllib2 to quote it
     url = url[0:url.rfind('/')+1] + urllib2.quote(fileName)
-    fileName = directory + '/' + fileName
+    fileName = os.path.join(directory, fileName)
 
     file = urllib2.urlopen(url)
     localFile = open(fileName, 'w')
