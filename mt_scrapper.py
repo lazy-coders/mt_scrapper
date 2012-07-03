@@ -39,6 +39,7 @@ def show_list_by_letter(letter):
             series[link.contents[0]] = link.get('href')
 
     return render_template('letter.html',
+                           indices=sorted(series),
                            series=series,
                            letter=letter,
                            section="Series - letra %s" % letter)
